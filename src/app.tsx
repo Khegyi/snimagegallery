@@ -91,7 +91,7 @@ export const App: React.FunctionComponent = () => {
   // const usr = useCurrentUser()
   const repo = useRepository()
   const [open, setOpen] = React.useState(false)
-  const [data, setData] = useState<File[]>([])
+  const [data, setData] = useState<any[]>([])
   const [selectedimage, setSelectedimage] = React.useState<SelectedImage>({
     imgIndex: 0,
     imgPath: '',
@@ -104,7 +104,8 @@ export const App: React.FunctionComponent = () => {
   })
 
   function handleClickOpen(imageInfo: SelectedImage) {
-    console.log(imageInfo)
+    // console.log(imageInfo)
+    // console.log(data[imageInfo.imgIndex])
     setSelectedimage({
       imgIndex: imageInfo.imgIndex,
       imgPath: imageInfo.imgPath,
@@ -116,6 +117,21 @@ export const App: React.FunctionComponent = () => {
       imgSize: imageInfo.imgSize,
     })
     setOpen(true)
+  }
+  function getSelectedImage(imageIndex: number) {
+    console.log(imageIndex)
+    //console.log(data[imageIndex])
+    const selectedImage = data[imageIndex]
+    setSelectedimage({
+      imgIndex: imageIndex,
+      imgPath: repo.configuration.repositoryUrl + selectedImage.Path,
+      imgTitle: selectedImage.DisplayName,
+      imgDescription: selectedImage.Description,
+      imgAuthor: '',
+      imgAuthorAvatar: selectedImage.DisplayName,
+      imgCreationDate: '',
+      imgSize: `${(selectedImage.Size ? selectedImage.Size / 1024 / 1024 : 0).toFixed(2)} MB`,
+    })
   }
   function handleClose() {
     setOpen(false)
@@ -129,7 +145,7 @@ export const App: React.FunctionComponent = () => {
           expand: ['CreatedBy'] as any,
         },
       })
-      console.log(result.d.results)
+      //console.log(result.d.results)
       setData(result.d.results)
     }
     loadImages()
@@ -151,7 +167,13 @@ export const App: React.FunctionComponent = () => {
       <CssBaseline />
       {/* <ImageListerProvider> */}
       <AdvancedGridList openFunction={handleClickOpen} imgList={data} />
-      <FullScreenDialog openedImg={selectedimage} isopen={open} closeFunction={handleClose} imgList={data} />
+      <FullScreenDialog
+        openedImg={selectedimage}
+        steppingFunction={getSelectedImage}
+        isopen={open}
+        closeFunction={handleClose}
+        imgList={data}
+      />
       {/* </ImageListerProvider> */}
     </div>
   )

@@ -15,6 +15,7 @@ export interface FullScreenprops {
   openedImg: SelectedImage
   isopen: boolean
   closeFunction: () => void
+  steppingFunction: (imageIndex: number) => void
   imgList: object[]
 }
 
@@ -29,4 +30,6 @@ export interface ImageList {
 
 export interface ResponsiveProps {
   imageInfo: SelectedImage
+  steppingFunction: (imageIndex: number) => void
+  imageListLenght: number
 }

@@ -1,14 +1,12 @@
 /* eslint-disable require-jsdoc */
-import React, { useContext } from 'react'
+import React from 'react'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import MobileStepper from '@material-ui/core/MobileStepper'
 import Button from '@material-ui/core/Button'
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
-//import ImageListContextProvider from './ImgList'
 
 export default function DotsMobileStepper(props: any) {
-  // const {images} = useContext{ImageListContextProvider}
   const useStyles = makeStyles({
     root: {
       maxWidth: '100%',
@@ -17,13 +15,20 @@ export default function DotsMobileStepper(props: any) {
   })
   const classes = useStyles()
   const theme = useTheme()
-  const [activeStep, setActiveStep] = React.useState(0)
-  const maxSteps = 6
+  const [activeStep, setActiveStep] = React.useState(props.imageIndex)
+  const maxSteps = props.imageListLenght
+  let imageIndex = 0
   function handleNext() {
-    setActiveStep(prevActiveStep => prevActiveStep + 1)
+    console.log(activeStep)
+    setActiveStep((prevActiveStep: number) => prevActiveStep + 1)
+    console.log(activeStep)
+    imageIndex = activeStep + 1
+    props.steppingFunction(imageIndex)
   }
   function handleBack() {
-    setActiveStep(prevActiveStep => prevActiveStep - 1)
+    setActiveStep((prevActiveStep: number) => prevActiveStep - 1)
+    imageIndex = activeStep - 1
+    props.steppingFunction(imageIndex)
   }
   return (
     <MobileStepper
@@ -33,7 +38,7 @@ export default function DotsMobileStepper(props: any) {
       activeStep={activeStep}
       className={classes.root}
       nextButton={
-        <Button size="small" onClick={handleNext} disabled={activeStep === 5}>
+        <Button size="small" onClick={handleNext} disabled={activeStep === props.imageListLenght - 1}>
           Next
           {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
         </Button>

@@ -26,7 +26,11 @@ export default function FullScreenDialog(props: FullScreenprops) {
           </Toolbar>
         </AppBar>
         {/* <ResponsiveDrawer openededImg={props.openedImg} /> */}
-        <DummyDrawerRight imageInfo={props.openedImg} />
+        <DummyDrawerRight
+          steppingFunction={props.steppingFunction}
+          imageListLenght={props.imgList.length}
+          imageInfo={props.openedImg}
+        />
       </Dialog>
     </div>
   )

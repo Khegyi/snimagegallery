@@ -12,7 +12,7 @@ import { AdvancedGridprops } from './Interface'
 
 export function AdvancedGridList(props: AdvancedGridprops) {
   const classes = useStyles()
-  const repo: any = useRepository()
+  const repo = useRepository()
 
   function pickTile(anumber: any) {
     let tilenumber = anumber % 3
