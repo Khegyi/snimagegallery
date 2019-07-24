@@ -1,6 +1,5 @@
 /* eslint-disable require-jsdoc */
 import React from 'react'
-import moment from 'moment'
 import { User } from '@sensenet/default-content-types'
 import { IconButton } from '@material-ui/core'
 import GridList from '@material-ui/core/GridList'
@@ -27,20 +26,7 @@ export function AdvancedGridList(props: AdvancedGridprops) {
             <img
               className={classes.imgTile}
               src={repo.configuration.repositoryUrl + tile.Path}
-              onClick={() =>
-                props.openFunction({
-                  imgCreationDate: moment(new Date(tile.CreationDate ? tile.CreationDate : '')).format(
-                    'YYYY-MM-DD HH:mm:ss',
-                  ),
-                  imgIndex: index,
-                  imgPath: repo.configuration.repositoryUrl + tile.Path,
-                  imgTitle: tile.DisplayName ? tile.DisplayName : '',
-                  imgDescription: tile.Description ? tile.Description : '',
-                  imgAuthor: '',
-                  imgAuthorAvatar: tile.DisplayName ? tile.DisplayName : '',
-                  imgSize: `${(tile.Size ? tile.Size / 1024 / 1024 : 0).toFixed(2)} MB`,
-                })
-              }
+              onClick={() => props.openFunction(index, true)}
               alt={tile.Description}
             />
             <GridListTileBar

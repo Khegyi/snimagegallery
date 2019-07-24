@@ -19,9 +19,7 @@ export default function DotsMobileStepper(props: any) {
   const maxSteps = props.imageListLenght
   let imageIndex = 0
   function handleNext() {
-    console.log(activeStep)
     setActiveStep((prevActiveStep: number) => prevActiveStep + 1)
-    console.log(activeStep)
     imageIndex = activeStep + 1
     props.steppingFunction(imageIndex)
   }

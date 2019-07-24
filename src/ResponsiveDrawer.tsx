@@ -11,9 +11,10 @@ export const DummyDrawerRight: React.FunctionComponent<ResponsiveProps> = props 
   // const theme = useTheme()
   return (
     <div className={classes.root}>
-      <main className={classes.selectedImgContent}>
-        <div className={classes.toolbar} />
-        <img className={classes.imgTileFullSize} src={props.imageInfo.imgPath} />
+      <main className={classes.drawerMain}>
+        <div className={classes.selectedImgContent}>
+          <img className={classes.imgTileFullSize} src={props.imageInfo.imgPath} />
+        </div>
         <DotsMobileStepper
           steppingFunction={props.steppingFunction}
           imageIndex={props.imageInfo.imgIndex}

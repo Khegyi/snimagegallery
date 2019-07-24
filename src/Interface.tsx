@@ -9,18 +9,19 @@ export interface SelectedImage {
   imgAuthorAvatar: string
   imgCreationDate: string
   imgSize: string
+  imgDownloadUrl: string
 }
 
 export interface FullScreenprops {
   openedImg: SelectedImage
   isopen: boolean
   closeFunction: () => void
-  steppingFunction: (imageIndex: number) => void
+  steppingFunction: (imageIndex: number, openInfoTab: boolean) => void
   imgList: object[]
 }
 
 export interface AdvancedGridprops {
-  openFunction: (images: SelectedImage) => void
+  openFunction: (imageIndex: number, openInfoTab: boolean) => void
   imgList: any[]
 }
 
@@ -30,6 +31,6 @@ export interface ImageList {
 
 export interface ResponsiveProps {
   imageInfo: SelectedImage
-  steppingFunction: (imageIndex: number) => void
+  steppingFunction: (imageIndex: number, openInfoTab: boolean) => void
   imageListLenght: number
 }

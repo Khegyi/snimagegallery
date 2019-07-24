@@ -2,6 +2,7 @@
 /* eslint-disable react/display-name */
 import React, { useEffect, useState } from 'react'
 import { ConstantContent, ODataCollectionResponse } from '@sensenet/client-core'
+import moment from 'moment'
 import { CssBaseline, Slide } from '@material-ui/core'
 import { TransitionProps } from '@material-ui/core/transitions'
 import { makeStyles } from '@material-ui/core/styles'
@@ -29,6 +30,13 @@ export const useStyles = makeStyles(theme => ({
       width: drawerWidth,
     },
     flexShrink: 0,
+  },
+  drawerMain: {
+    padding: '24px 0',
+    width: `calc(100% - ${drawerWidth}px)`,
+    display: 'block',
+    height: '100%',
+    right: drawerWidth,
   },
   appBar: {
     width: `calc(100% - ${drawerWidth}px)`,
@@ -64,9 +72,7 @@ export const useStyles = makeStyles(theme => ({
     maxHeight: '84vh',
   },
   selectedImgContent: {
-    padding: '24px 0',
-    width: `calc(100% - ${drawerWidth}px)`,
-    right: drawerWidth,
+    width: '100%',
   },
   gridList: {
     width: 800,
@@ -101,38 +107,29 @@ export const App: React.FunctionComponent = () => {
     imgAuthorAvatar: '',
     imgCreationDate: '',
     imgSize: '',
+    imgDownloadUrl: '',
   })
-
-  function handleClickOpen(imageInfo: SelectedImage) {
-    // console.log(imageInfo)
-    // console.log(data[imageInfo.imgIndex])
-    setSelectedimage({
-      imgIndex: imageInfo.imgIndex,
-      imgPath: imageInfo.imgPath,
-      imgTitle: imageInfo.imgTitle,
-      imgDescription: imageInfo.imgDescription,
-      imgAuthor: imageInfo.imgAuthor,
-      imgAuthorAvatar: imageInfo.imgAuthorAvatar,
-      imgCreationDate: imageInfo.imgCreationDate,
-      imgSize: imageInfo.imgSize,
-    })
-    setOpen(true)
-  }
-  function getSelectedImage(imageIndex: number) {
-    console.log(imageIndex)
-    //console.log(data[imageIndex])
+  // Opens the Details View and Fetches the datas for the Selected Image
+  function getSelectedImage(imageIndex: number, openInfoTab: boolean) {
     const selectedImage = data[imageIndex]
     setSelectedimage({
       imgIndex: imageIndex,
       imgPath: repo.configuration.repositoryUrl + selectedImage.Path,
       imgTitle: selectedImage.DisplayName,
       imgDescription: selectedImage.Description,
-      imgAuthor: '',
+      imgAuthor: selectedImage.CreatedBy.FullName,
       imgAuthorAvatar: selectedImage.DisplayName,
-      imgCreationDate: '',
+      imgCreationDate: moment(new Date(selectedImage.CreationDate ? selectedImage.CreationDate : '')).format(
+        'YYYY-MM-DD HH:mm:ss',
+      ),
       imgSize: `${(selectedImage.Size ? selectedImage.Size / 1024 / 1024 : 0).toFixed(2)} MB`,
+      imgDownloadUrl: repo.configuration.repositoryUrl + selectedImage.Binary.__mediaresource.media_src,
     })
+    if (openInfoTab) {
+      setOpen(true)
+    }
   }
+  // Close the Details View
   function handleClose() {
     setOpen(false)
   }
@@ -141,11 +138,21 @@ export const App: React.FunctionComponent = () => {
       const result: ODataCollectionResponse<any> = await repo.loadCollection({
         path: `${ConstantContent.PORTAL_ROOT.Path}/Content/IT/ImageLibrary`,
         oDataOptions: {
-          select: ['DisplayName', 'Description', 'CreationDate', 'CreatedBy', 'ModificationDate', 'Size'] as any,
+          select: [
+            'Binary',
+            'DisplayName',
+            'Description',
+            'CreationDate',
+            'CreatedBy',
+            'Height',
+            'ModificationDate',
+            'Size',
+            'Width',
+          ] as any,
           expand: ['CreatedBy'] as any,
         },
       })
-      //console.log(result.d.results)
+      console.log(result.d.results)
       setData(result.d.results)
     }
     loadImages()
@@ -165,8 +172,7 @@ export const App: React.FunctionComponent = () => {
         backgroundSize: 'auto',
       }}>
       <CssBaseline />
-      {/* <ImageListerProvider> */}
-      <AdvancedGridList openFunction={handleClickOpen} imgList={data} />
+      <AdvancedGridList openFunction={getSelectedImage} imgList={data} />
       <FullScreenDialog
         openedImg={selectedimage}
         steppingFunction={getSelectedImage}
@@ -174,7 +180,6 @@ export const App: React.FunctionComponent = () => {
         closeFunction={handleClose}
         imgList={data}
       />
-      {/* </ImageListerProvider> */}
     </div>
   )
 }

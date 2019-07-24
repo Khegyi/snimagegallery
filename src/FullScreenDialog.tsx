@@ -20,7 +20,7 @@ export default function FullScreenDialog(props: FullScreenprops) {
             <Typography variant="h6" className={classes.title}>
               Image
             </Typography>
-            <IconButton edge="start" color="inherit" onClick={props.closeFunction} aria-label="Close">
+            <IconButton edge="start" color="inherit" href={props.openedImg.imgDownloadUrl} aria-label="Close">
               <SaveAlt />
             </IconButton>
           </Toolbar>
