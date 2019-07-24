@@ -1,10 +1,10 @@
 /* eslint-disable require-jsdoc */
 import React from 'react'
-import { AppBar, Button, Dialog, IconButton, Toolbar, Typography } from '@material-ui/core'
+import { AppBar, Dialog, IconButton, Toolbar, Typography } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import SaveAlt from '@material-ui/icons/SaveAlt'
 import { Transition, useStyles } from './app'
-import ResponsiveDrawer from './ResponsiveDrawer'
+import { DummyDrawerRight } from './ResponsiveDrawer'
 import { FullScreenprops } from './Interface'
 
 export default function FullScreenDialog(props: FullScreenprops) {
@@ -26,7 +26,7 @@ export default function FullScreenDialog(props: FullScreenprops) {
           </Toolbar>
         </AppBar>
         {/* <ResponsiveDrawer openededImg={props.openedImg} /> */}
-        <ResponsiveDrawer />
+        <DummyDrawerRight imageInfo={props.openedImg} />
       </Dialog>
     </div>
   )

@@ -1,4 +1,7 @@
+//import { File, GenericContent } from '@sensenet/default-content-types'
+
 export interface SelectedImage {
+  imgIndex: number
   imgPath: string
   imgTitle: string
   imgDescription: string
@@ -9,12 +12,21 @@ export interface SelectedImage {
 }
 
 export interface FullScreenprops {
-  openFunction: (imgId: any) => void
   openedImg: SelectedImage
   isopen: boolean
   closeFunction: () => void
+  imgList: object[]
+}
+
+export interface AdvancedGridprops {
+  openFunction: (images: SelectedImage) => void
+  imgList: any[]
+}
+
+export interface ImageList {
+  images: object[]
 }
 
 export interface ResponsiveProps {
-  openedImg: SelectedImage
+  imageInfo: SelectedImage
 }

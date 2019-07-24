@@ -1,21 +1,16 @@
-/* eslint-disable import/export */
 /* eslint-disable require-jsdoc */
 /* eslint-disable react/display-name */
-import React from 'react'
-
-import { Button, CssBaseline, Slide, Tooltip, Typography } from '@material-ui/core'
+import React, { useEffect, useState } from 'react'
+import { ConstantContent, ODataCollectionResponse } from '@sensenet/client-core'
+import { CssBaseline, Slide } from '@material-ui/core'
 import { TransitionProps } from '@material-ui/core/transitions'
 import { makeStyles } from '@material-ui/core/styles'
 import snLogo from './assets/sensenet_logo_transparent.png'
-import { useCurrentUser } from './hooks/use-current-user'
 import { useRepository } from './hooks/use-repository'
 import FullScreenDialog from './FullScreenDialog'
 import { AdvancedGridList } from './AdvancedGridList'
 import { SelectedImage } from './Interface'
 
-/**
- * The main entry point of your app. You can start h@cking from here ;)
- */
 const drawerWidth = 240
 
 export const useStyles = makeStyles(theme => ({
@@ -27,16 +22,17 @@ export const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.background.paper,
   },
   drawer: {
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
     [theme.breakpoints.up('sm')]: {
       width: drawerWidth,
-      flexShrink: 0,
     },
+    flexShrink: 0,
   },
   appBar: {
-    marginLeft: drawerWidth,
-    [theme.breakpoints.up('sm')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-    },
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginRight: drawerWidth,
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -60,15 +56,17 @@ export const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
   },
   imgTileFullSize: {
-    width: 500,
-    height: 450,
-    position: 'relative',
-    margin: '20px auto',
+    width: 'auto',
+    height: 'auto',
+    display: 'block',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    maxHeight: '84vh',
   },
   selectedImgContent: {
-    padding: '24px',
-    flexGrow: 1,
-    position: 'absolute',
+    padding: '24px 0',
+    width: `calc(100% - ${drawerWidth}px)`,
+    right: drawerWidth,
   },
   gridList: {
     width: 800,
@@ -90,10 +88,12 @@ export const Transition = React.forwardRef<unknown, TransitionProps>((props, ref
 })
 
 export const App: React.FunctionComponent = () => {
-  const usr = useCurrentUser()
+  // const usr = useCurrentUser()
   const repo = useRepository()
   const [open, setOpen] = React.useState(false)
+  const [data, setData] = useState<File[]>([])
   const [selectedimage, setSelectedimage] = React.useState<SelectedImage>({
+    imgIndex: 0,
     imgPath: '',
     imgTitle: '',
     imgDescription: '',
@@ -103,25 +103,37 @@ export const App: React.FunctionComponent = () => {
     imgSize: '',
   })
 
-  function handleClickOpen(imgId: any) {
-    console.log(imgId)
+  function handleClickOpen(imageInfo: SelectedImage) {
+    console.log(imageInfo)
     setSelectedimage({
-      imgPath: 'https://dev.demo.sensenet.com/Root/Content/IT/ImageLibrary/bagas-haryo-1415756-unsplash.jpg',
-      imgTitle: 'Test',
-      imgDescription: 'TestDEx',
-      imgAuthor: 'Admin3',
-      imgAuthorAvatar:
-        'https://avatars2.githubusercontent.com/u/14124275?s=400&u=24c25d332a89b3fbf359a4ece4f1b143c9bfd02e&v=4',
-      imgCreationDate: '20154',
-      imgSize: '6546545',
+      imgIndex: imageInfo.imgIndex,
+      imgPath: imageInfo.imgPath,
+      imgTitle: imageInfo.imgTitle,
+      imgDescription: imageInfo.imgDescription,
+      imgAuthor: imageInfo.imgAuthor,
+      imgAuthorAvatar: imageInfo.imgAuthorAvatar,
+      imgCreationDate: imageInfo.imgCreationDate,
+      imgSize: imageInfo.imgSize,
     })
     setOpen(true)
   }
-
   function handleClose() {
     setOpen(false)
   }
-
+  useEffect(() => {
+    async function loadImages(): Promise<void> {
+      const result: ODataCollectionResponse<any> = await repo.loadCollection({
+        path: `${ConstantContent.PORTAL_ROOT.Path}/Content/IT/ImageLibrary`,
+        oDataOptions: {
+          select: ['DisplayName', 'Description', 'CreationDate', 'CreatedBy', 'ModificationDate', 'Size'] as any,
+          expand: ['CreatedBy'] as any,
+        },
+      })
+      console.log(result.d.results)
+      setData(result.d.results)
+    }
+    loadImages()
+  }, [repo])
   return (
     <div
       style={{
@@ -137,13 +149,10 @@ export const App: React.FunctionComponent = () => {
         backgroundSize: 'auto',
       }}>
       <CssBaseline />
-      <AdvancedGridList openFunction={handleClickOpen} />
-      <FullScreenDialog
-        openFunction={handleClickOpen}
-        openedImg={selectedimage}
-        isopen={open}
-        closeFunction={handleClose}
-      />
+      {/* <ImageListerProvider> */}
+      <AdvancedGridList openFunction={handleClickOpen} imgList={data} />
+      <FullScreenDialog openedImg={selectedimage} isopen={open} closeFunction={handleClose} imgList={data} />
+      {/* </ImageListerProvider> */}
     </div>
   )
 }
