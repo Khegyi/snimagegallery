@@ -20,7 +20,6 @@ export const useStyles = makeStyles(theme => ({
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     overflow: 'visible',
-    width: '100%',
     backgroundColor: theme.palette.background.paper,
   },
   drawer: {
@@ -198,7 +197,7 @@ export const App: React.FunctionComponent = () => {
         alignItems: 'center',
         justifyContent: 'center',
         width: '100%',
-        height: '100%',
+        height: 'auto',
         flexDirection: 'column',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
