@@ -1,5 +1,3 @@
-//import { File, GenericContent } from '@sensenet/default-content-types'
-
 export interface SelectedImage {
   imgIndex: number
   imgPath: string

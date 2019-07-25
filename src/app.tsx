@@ -20,9 +20,7 @@ export const useStyles = makeStyles(theme => ({
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     overflow: 'visible',
-    [theme.breakpoints.up('sm')]: {
-      overflow: 'hidden',
-    },
+    width: '100%',
     backgroundColor: theme.palette.background.paper,
   },
   drawer: {
@@ -37,10 +35,6 @@ export const useStyles = makeStyles(theme => ({
   appBar: {
     width: '100%',
     marginRight: '0',
-    // [theme.breakpoints.up('sm')]: {
-    //   width: `calc(100% - ${drawerWidth}px)`,
-    //   marginRight: drawerWidth,
-    // },
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -48,7 +42,6 @@ export const useStyles = makeStyles(theme => ({
       display: 'none',
     },
   },
-  //toolbar: theme.mixins.toolbar,
   toolbar: {
     [theme.breakpoints.up('sm')]: {
       display: 'block',
@@ -107,8 +100,8 @@ export const useStyles = makeStyles(theme => ({
     height: '100%',
   },
   gridList: {
-    width: 800,
-    height: 600,
+    width: '100%',
+    height: 'auto',
     // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
     transform: 'translateZ(0)',
   },
@@ -119,6 +112,15 @@ export const useStyles = makeStyles(theme => ({
   icon: {
     color: 'white',
   },
+  defaultAvatarimg: {
+    marginBottom: '-5px',
+  },
+  avatarImg: {
+    height: '24px',
+    width: '24px',
+    borderRadius: '50%',
+    marginLeft: '5px',
+  },
 }))
 
 export const Transition = React.forwardRef<unknown, TransitionProps>((props, ref) => {
@@ -126,7 +128,6 @@ export const Transition = React.forwardRef<unknown, TransitionProps>((props, ref
 })
 
 export const App: React.FunctionComponent = () => {
-  // const usr = useCurrentUser()
   const repo = useRepository()
   const [open, setOpen] = React.useState(false)
   const [data, setData] = useState<any[]>([])
@@ -150,7 +151,8 @@ export const App: React.FunctionComponent = () => {
       imgTitle: selectedImage.DisplayName,
       imgDescription: selectedImage.Description,
       imgAuthor: selectedImage.CreatedBy.FullName,
-      imgAuthorAvatar: selectedImage.DisplayName,
+      imgAuthorAvatar: 'https://dev.demo.sensenet.com//Root/Content/demoavatars/businesscat.jpeg',
+      //imgAuthorAvatar: selectedImage.CreatedBy.Avatar.Url,
       imgCreationDate: moment(new Date(selectedImage.CreationDate ? selectedImage.CreationDate : '')).format(
         'YYYY-MM-DD HH:mm:ss',
       ),
