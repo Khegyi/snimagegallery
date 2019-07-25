@@ -19,7 +19,10 @@ export const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
-    overflow: 'hidden',
+    overflow: 'visible',
+    [theme.breakpoints.up('sm')]: {
+      overflow: 'hidden',
+    },
     backgroundColor: theme.palette.background.paper,
   },
   drawer: {
@@ -31,16 +34,13 @@ export const useStyles = makeStyles(theme => ({
     },
     flexShrink: 0,
   },
-  drawerMain: {
-    padding: '24px 0',
-    width: `calc(100% - ${drawerWidth}px)`,
-    display: 'block',
-    height: '100%',
-    right: drawerWidth,
-  },
   appBar: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginRight: drawerWidth,
+    width: '100%',
+    marginRight: '0',
+    // [theme.breakpoints.up('sm')]: {
+    //   width: `calc(100% - ${drawerWidth}px)`,
+    //   marginRight: drawerWidth,
+    // },
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -48,9 +48,24 @@ export const useStyles = makeStyles(theme => ({
       display: 'none',
     },
   },
-  toolbar: theme.mixins.toolbar,
+  //toolbar: theme.mixins.toolbar,
+  toolbar: {
+    [theme.breakpoints.up('sm')]: {
+      display: 'block',
+    },
+    display: 'none',
+    marginTop: '64px',
+  },
   drawerPaper: {
-    width: drawerWidth,
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      display: 'block',
+      position: 'relative',
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: drawerWidth,
+    },
+    zIndex: 1099,
   },
   content: {
     flexGrow: 1,
@@ -64,15 +79,32 @@ export const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
   },
   imgTileFullSize: {
-    width: 'auto',
+    maxWidth: '100%',
     height: 'auto',
     display: 'block',
     marginLeft: 'auto',
     marginRight: 'auto',
     maxHeight: '84vh',
+    flexDirection: 'row',
+    marginTop: '60px',
   },
   selectedImgContent: {
     width: '100%',
+    height: '94vh',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  drawerMain: {
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      right: '0',
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: `calc(100% - ${drawerWidth}px)`,
+      right: drawerWidth,
+    },
+    display: 'block',
+    height: '100%',
   },
   gridList: {
     width: 800,

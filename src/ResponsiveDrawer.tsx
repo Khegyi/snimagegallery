@@ -1,5 +1,6 @@
 /* eslint-disable require-jsdoc */
 import React from 'react'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { Divider, Drawer, Typography } from '@material-ui/core'
 //import { useTheme } from '@material-ui/core/styles'
 import { useStyles } from './app'
@@ -8,6 +9,7 @@ import DotsMobileStepper from './DotsMobileStepper'
 
 export const DummyDrawerRight: React.FunctionComponent<ResponsiveProps> = props => {
   const classes = useStyles()
+  const matches = useMediaQuery('(min-width:600px)')
   // const theme = useTheme()
   return (
     <div className={classes.root}>
@@ -27,7 +29,7 @@ export const DummyDrawerRight: React.FunctionComponent<ResponsiveProps> = props 
         classes={{
           paper: classes.drawerPaper,
         }}
-        anchor="right">
+        anchor={matches ? 'right' : 'bottom'}>
         <div className={classes.toolbar} />
         <Divider />
         <Typography>Name: {props.imageInfo.imgTitle}</Typography>
