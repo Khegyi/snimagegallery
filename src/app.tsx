@@ -1,11 +1,12 @@
 /* eslint-disable require-jsdoc */
 /* eslint-disable react/display-name */
 import React, { useEffect, useState } from 'react'
-import { ConstantContent, ODataCollectionResponse } from '@sensenet/client-core'
+import { ConstantContent } from '@sensenet/client-core'
 import moment from 'moment'
 import { CssBaseline, Slide } from '@material-ui/core'
 import { TransitionProps } from '@material-ui/core/transitions'
 import { makeStyles } from '@material-ui/core/styles'
+import { Image } from '@sensenet/default-content-types'
 import snLogo from './assets/sensenet_logo_transparent.png'
 import { useRepository } from './hooks/use-repository'
 import FullScreenDialog from './FullScreenDialog'
@@ -150,8 +151,7 @@ export const App: React.FunctionComponent = () => {
       imgTitle: selectedImage.DisplayName,
       imgDescription: selectedImage.Description,
       imgAuthor: selectedImage.CreatedBy.FullName,
-      imgAuthorAvatar: 'https://dev.demo.sensenet.com//Root/Content/demoavatars/businesscat.jpeg',
-      //imgAuthorAvatar: selectedImage.CreatedBy.Avatar.Url,
+      imgAuthorAvatar: selectedImage.CreatedBy.Avatar.Url,
       imgCreationDate: moment(new Date(selectedImage.CreationDate ? selectedImage.CreationDate : '')).format(
         'YYYY-MM-DD HH:mm:ss',
       ),
@@ -168,7 +168,7 @@ export const App: React.FunctionComponent = () => {
   }
   useEffect(() => {
     async function loadImages(): Promise<void> {
-      const result: ODataCollectionResponse<any> = await repo.loadCollection({
+      const result = await repo.loadCollection<Image>({
         path: `${ConstantContent.PORTAL_ROOT.Path}/Content/IT/ImageLibrary`,
         oDataOptions: {
           select: [
@@ -181,11 +181,10 @@ export const App: React.FunctionComponent = () => {
             'ModificationDate',
             'Size',
             'Width',
-          ] as any,
-          expand: ['CreatedBy'] as any,
+          ],
+          expand: ['CreatedBy'],
         },
       })
-      console.log(result.d.results)
       setData(result.d.results)
     }
     loadImages()
