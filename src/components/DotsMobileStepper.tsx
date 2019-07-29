@@ -1,4 +1,3 @@
-/* eslint-disable require-jsdoc */
 import React from 'react'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import MobileStepper from '@material-ui/core/MobileStepper'
@@ -6,7 +5,15 @@ import Button from '@material-ui/core/Button'
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 
-export default function DotsMobileStepper(props: any) {
+interface DottedStepperProps {
+  imageIndex: number
+  steppingFunction: (imageIndex: number, openInfoTab: boolean) => void
+  imageListLenght: number
+}
+/**
+ * Fetches the images from the repository.
+ */
+export default function DotsMobileStepper(props: DottedStepperProps) {
   const useStyles = makeStyles({
     root: {
       maxWidth: '100%',
@@ -18,15 +25,21 @@ export default function DotsMobileStepper(props: any) {
   const [activeStep, setActiveStep] = React.useState(props.imageIndex)
   const maxSteps = props.imageListLenght
   let imageIndex = 0
+  /**
+   * Fetches the images from the repository.
+   */
   function handleNext() {
     setActiveStep((prevActiveStep: number) => prevActiveStep + 1)
     imageIndex = activeStep + 1
-    props.steppingFunction(imageIndex)
+    props.steppingFunction(imageIndex, false)
   }
+  /**
+   * Fetches the images from the repository.
+   */
   function handleBack() {
     setActiveStep((prevActiveStep: number) => prevActiveStep - 1)
     imageIndex = activeStep - 1
-    props.steppingFunction(imageIndex)
+    props.steppingFunction(imageIndex, false)
   }
   return (
     <MobileStepper
