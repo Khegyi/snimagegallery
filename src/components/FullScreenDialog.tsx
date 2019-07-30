@@ -5,7 +5,7 @@ import SaveAlt from '@material-ui/icons/SaveAlt'
 import { makeStyles } from '@material-ui/core/styles'
 import { Transition } from '../app'
 import { SelectedImage } from '../Interface'
-import ResponsiveDrawer from './ResponsiveDrawer'
+import { ResponsiveDrawer } from './ResponsiveDrawer'
 
 interface FullScreenprops {
   openedImg: SelectedImage
@@ -35,7 +35,7 @@ export const useStyles = makeStyles(theme => ({
 /**
  * Display the details view
  */
-export default function FullScreenDialog(props: FullScreenprops) {
+export const FullScreenDialog: React.FunctionComponent<FullScreenprops> = props => {
   const classes = useStyles()
   return (
     <div>

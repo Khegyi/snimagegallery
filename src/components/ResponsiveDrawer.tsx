@@ -5,7 +5,7 @@ import { Divider, Drawer, Typography } from '@material-ui/core'
 import Person from '@material-ui/icons/Person'
 import { makeStyles } from '@material-ui/core/styles'
 import { SelectedImage } from '../Interface'
-import DotsMobileStepper from './DotsMobileStepper'
+import { DotsMobileStepper } from './DotsMobileStepper'
 
 const drawerWidth = 240
 
@@ -88,7 +88,7 @@ export const useStyles = makeStyles(theme => ({
     marginLeft: '5px',
   },
 }))
-export default function ResponsiveDrawer(props: ResponsiveProps) {
+export const ResponsiveDrawer: React.FunctionComponent<ResponsiveProps> = props => {
   const classes = useStyles()
   const matches = useMediaQuery('(min-width:600px)')
   return (

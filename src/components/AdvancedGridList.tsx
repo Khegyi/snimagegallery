@@ -1,5 +1,5 @@
 import React from 'react'
-import { User } from '@sensenet/default-content-types'
+import { Image, User } from '@sensenet/default-content-types'
 import { IconButton } from '@material-ui/core'
 import GridList from '@material-ui/core/GridList'
 import { makeStyles } from '@material-ui/core/styles'
@@ -9,7 +9,7 @@ import { useRepository } from '../hooks/use-repository'
 
 interface AdvancedGridprops {
   openFunction: (imageIndex: number, openInfoTab: boolean) => void
-  imgList: any[]
+  imgList: Image[]
 }
 
 export const useStyles = makeStyles(theme => ({
@@ -39,7 +39,7 @@ export const useStyles = makeStyles(theme => ({
 /**
  * Display Images from repository
  */
-export function AdvancedGridList(props: AdvancedGridprops) {
+export const AdvancedGridList: React.FunctionComponent<AdvancedGridprops> = props => {
   const classes = useStyles()
   const repo = useRepository()
   /**
