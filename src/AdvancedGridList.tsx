@@ -1,53 +1,19 @@
+/* eslint-disable require-jsdoc */
 import React from 'react'
 import { User } from '@sensenet/default-content-types'
 import { IconButton } from '@material-ui/core'
 import GridList from '@material-ui/core/GridList'
-import { makeStyles } from '@material-ui/core/styles'
 import GridListTile from '@material-ui/core/GridListTile'
 import GridListTileBar from '@material-ui/core/GridListTileBar'
-import { useRepository } from '../hooks/use-repository'
+import { useRepository } from './hooks/use-repository'
+import { useStyles } from './app'
+import { AdvancedGridprops } from './Interface'
 
-interface AdvancedGridprops {
-  openFunction: (imageIndex: number, openInfoTab: boolean) => void
-  imgList: any[]
-}
-
-export const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    overflow: 'visible',
-    backgroundColor: theme.palette.background.paper,
-  },
-  gridList: {
-    width: '100%',
-    height: 'auto',
-    transform: 'translateZ(0)',
-  },
-  imgTile: {
-    cursor: 'pointer',
-  },
-  icon: {
-    color: 'white',
-  },
-  titleBar: {
-    background: 'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
-  },
-}))
-
-/**
- * Display Images from repository
- */
 export function AdvancedGridList(props: AdvancedGridprops) {
   const classes = useStyles()
   const repo = useRepository()
-  /**
-   * Determines which image should be full width
-   * @param {number} anumber Seletected number's index.
-   * @returns {int} 2 for full width, 1 for half size.
-   */
-  function pickTile(anumber: number) {
+
+  function pickTile(anumber: any) {
     let tilenumber = anumber % 3
     tilenumber = tilenumber === 0 ? 2 : 1
     return tilenumber

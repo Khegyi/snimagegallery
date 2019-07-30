@@ -9,3 +9,26 @@ export interface SelectedImage {
   imgSize: string
   imgDownloadUrl: string
 }
+
+export interface FullScreenprops {
+  openedImg: SelectedImage
+  isopen: boolean
+  closeFunction: () => void
+  steppingFunction: (imageIndex: number, openInfoTab: boolean) => void
+  imgList: object[]
+}
+
+export interface AdvancedGridprops {
+  openFunction: (imageIndex: number, openInfoTab: boolean) => void
+  imgList: any[]
+}
+
+export interface ImageList {
+  images: object[]
+}
+
+export interface ResponsiveProps {
+  imageInfo: SelectedImage
+  steppingFunction: (imageIndex: number, openInfoTab: boolean) => void
+  imageListLenght: number
+}
