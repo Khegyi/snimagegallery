@@ -122,28 +122,4 @@ describe('App Layout', () => {
     expect(obj.imgAuthor).toBe('')
     expect(obj.imgSize).toBe('0.00 MB')
   })
-  it.only('getselectedImage with uncomplete images', async () => {
-    const steppingFunction = jest.fn()
-    let wrapper: any
-    await act(async () => {
-      wrapper = shallow(<App />)
-    })
-    act(() => {
-      wrapper
-        .update()
-        .find(FullScreenDialog)
-        .prop('closeFunction')
-      expect(wrapper.closeFunction).toBeCalled()
-    })
-    const obj = wrapper
-      .update()
-      .find(FullScreenDialog)
-      .prop('openedImg')
-    expect(obj.imgTitle).toBe('')
-    expect(obj.imgAuthorAvatar).toBe('')
-    expect(obj.imgDescription).toBe('')
-    expect(obj.imgCreationDate).toBe('Invalid date')
-    expect(obj.imgAuthor).toBe('')
-    expect(obj.imgSize).toBe('0.00 MB')
-  })
 })

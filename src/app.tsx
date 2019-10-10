@@ -73,9 +73,10 @@ export const App: React.FunctionComponent = () => {
         'YYYY-MM-DD HH:mm:ss',
       )
       imageSize = `${(selectedImage.Size ? selectedImage.Size / 1024 / 1024 : 0).toFixed(2)} MB`
-      imageDownloadUrl = selectedImage.Binary
-        ? repo.configuration.repositoryUrl + selectedImage.Binary.__mediaresource.media_src
-        : ''
+      imageDownloadUrl =
+        selectedImage.Binary != undefined
+          ? repo.configuration.repositoryUrl + selectedImage.Binary.__mediaresource.media_src
+          : ''
     }
     setSelectedimage({
       imgIndex: imageIndex,
