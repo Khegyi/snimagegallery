@@ -62,12 +62,12 @@ export const App: React.FunctionComponent = () => {
     let imageSize = ''
     let imageDownloadUrl = ''
 
-    if (selectedImage != null) {
-      imgageDisplayName = selectedImage.DisplayName ? selectedImage.DisplayName : ''
-      imgageDescription = selectedImage.Description ? selectedImage.Description : ''
+    if (selectedImage != undefined) {
+      imgageDisplayName = selectedImage.DisplayName as string
+      imgageDescription = selectedImage.Description as string
       const avatarUser = selectedImage.CreatedBy as User
       avatarUserAvatarUrl = avatarUser.Avatar ? avatarUser.Avatar.Url : ''
-      imgageAuthorName = selectedImage.CreatedBy ? ((selectedImage.CreatedBy as User).FullName as string) : ''
+      imgageAuthorName = (selectedImage.CreatedBy as User).FullName as string
       imagePath = repo.configuration.repositoryUrl + selectedImage.Path
       imgageCreationDate = moment(new Date(selectedImage.CreationDate ? selectedImage.CreationDate : '')).format(
         'YYYY-MM-DD HH:mm:ss',

@@ -4,7 +4,7 @@ import { act } from 'react-dom/test-utils'
 import { App, Transition } from '../src/app'
 import { FullScreenDialog } from '../src/components/FullScreenDialog'
 import { RepositoryContext } from '../src/context/repository-provider'
-import { images } from './mocks/images'
+import { emptyimages, images } from './mocks/images'
 import moment = require('moment')
 
 describe('App Layout', () => {
@@ -85,5 +85,65 @@ describe('App Layout', () => {
     expect(obj.imgCreationDate).toBe('')
     expect(obj.imgAuthor).toBe('')
     expect(obj.imgSize).toBe('')
+  })
+
+  it('getselectedImage with uncomplete images', async () => {
+    const repository = {
+      loadCollection: () => {
+        return { d: { results: emptyimages } }
+      },
+      configuration: {
+        repositoryUrl: 'url',
+      },
+    }
+    let wrapper: any
+    await act(async () => {
+      wrapper = mount(
+        <RepositoryContext.Provider value={repository as any}>
+          <App />
+        </RepositoryContext.Provider>,
+      )
+    })
+    act(() => {
+      wrapper
+        .update()
+        .find(FullScreenDialog)
+        .prop('steppingFunction')(0, true)
+    })
+    const obj = wrapper
+      .update()
+      .find(FullScreenDialog)
+      .prop('openedImg')
+    expect(obj.imgTitle).toBe('')
+    expect(obj.imgPath).toBe(repository.configuration.repositoryUrl)
+    expect(obj.imgAuthorAvatar).toBe('')
+    expect(obj.imgDescription).toBe('')
+    expect(obj.imgCreationDate).toBe('Invalid date')
+    expect(obj.imgAuthor).toBe('')
+    expect(obj.imgSize).toBe('0.00 MB')
+  })
+  it.only('getselectedImage with uncomplete images', async () => {
+    const steppingFunction = jest.fn()
+    let wrapper: any
+    await act(async () => {
+      wrapper = shallow(<App />)
+    })
+    act(() => {
+      wrapper
+        .update()
+        .find(FullScreenDialog)
+        .prop('closeFunction')
+      expect(wrapper.closeFunction).toBeCalled()
+    })
+    const obj = wrapper
+      .update()
+      .find(FullScreenDialog)
+      .prop('openedImg')
+    expect(obj.imgTitle).toBe('')
+    expect(obj.imgAuthorAvatar).toBe('')
+    expect(obj.imgDescription).toBe('')
+    expect(obj.imgCreationDate).toBe('Invalid date')
+    expect(obj.imgAuthor).toBe('')
+    expect(obj.imgSize).toBe('0.00 MB')
   })
 })
