@@ -74,8 +74,7 @@
     "@sensenet/default-content-types": "^1.2.2",
     "moment": "^2.24.0",
     "react": "^16.10.2",
-    "react-dom": "^16.10.2",
-    "yarn": "^1.17.3"
+    "react-dom": "^16.10.2"
   },
   "husky": {
     "hooks": {

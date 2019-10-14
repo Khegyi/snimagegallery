@@ -4,27 +4,27 @@ import { Button } from '@material-ui/core'
 import { DotsMobileStepper } from '../src/components/DotsMobileStepper'
 
 describe('handleNext', () => {
-  const proba = {
+  const mock = {
     imageIndex: 1,
     steppingFunction: jest.fn(),
     imageListLenght: 1,
   }
   it('Matches snapshot', () => {
-    const wrapper = mount(<DotsMobileStepper {...proba} />)
+    const wrapper = mount(<DotsMobileStepper {...mock} />)
     expect(wrapper).toMatchSnapshot()
   })
   it('Handle Next Click', () => {
-    const l = mount(<DotsMobileStepper {...proba} />)
+    const l = mount(<DotsMobileStepper {...mock} />)
     l.find(Button)
       .last()
       .simulate('click')
-    expect(proba.steppingFunction).toBeCalledWith(2, false)
+    expect(mock.steppingFunction).toBeCalledWith(2, false)
   })
   it('Handle Back Click', () => {
-    const l = mount(<DotsMobileStepper {...proba} />)
+    const l = mount(<DotsMobileStepper {...mock} />)
     l.find(Button)
       .first()
       .simulate('click')
-    expect(proba.steppingFunction).toBeCalledWith(0, false)
+    expect(mock.steppingFunction).toBeCalledWith(0, false)
   })
 })
