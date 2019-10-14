@@ -37,21 +37,23 @@ export const useStyles = makeStyles(theme => ({
 }))
 
 /**
+ * Determines which image should be full width
+ * @param {number} anumber Seletected number's index.
+ * @returns {int} 2 for full width, 1 for half size.
+ */
+export function pickTile(anumber: number) {
+  let tilenumber = anumber % 3
+  tilenumber = tilenumber === 0 ? 2 : 1
+  return tilenumber
+}
+
+/**
  * Display Images from repository
  */
 export const AdvancedGridList: React.FunctionComponent<AdvancedGridprops> = props => {
   const classes = useStyles()
   const repo = useRepository()
-  /**
-   * Determines which image should be full width
-   * @param {number} anumber Seletected number's index.
-   * @returns {int} 2 for full width, 1 for half size.
-   */
-  function pickTile(anumber: number) {
-    let tilenumber = anumber % 3
-    tilenumber = tilenumber === 0 ? 2 : 1
-    return tilenumber
-  }
+
   return (
     <div className={classes.root}>
       <GridList cellHeight={200} spacing={1} className={classes.gridList}>

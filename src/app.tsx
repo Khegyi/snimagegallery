@@ -53,23 +53,41 @@ export const App: React.FunctionComponent = () => {
    */
   function getSelectedImage(imageIndex: number, openInfoTab: boolean) {
     const selectedImage = data[imageIndex]
-    const avatarUser = selectedImage.CreatedBy as User
-    const avatarUserAvatarUrl = avatarUser.Avatar ? avatarUser.Avatar.Url : ''
+    let avatarUserAvatarUrl = ''
+    let imgageAuthorName = ''
+    let imgageDisplayName = ''
+    let imgageDescription = ''
+    let imgageCreationDate = ''
+    let imagePath = ''
+    let imageSize = ''
+    let imageDownloadUrl = ''
 
+    if (selectedImage != undefined) {
+      imgageDisplayName = selectedImage.DisplayName as string
+      imgageDescription = selectedImage.Description as string
+      const avatarUser = selectedImage.CreatedBy as User
+      avatarUserAvatarUrl = avatarUser.Avatar ? avatarUser.Avatar.Url : ''
+      imgageAuthorName = (selectedImage.CreatedBy as User).FullName as string
+      imagePath = repo.configuration.repositoryUrl + selectedImage.Path
+      imgageCreationDate = moment(new Date(selectedImage.CreationDate ? selectedImage.CreationDate : '')).format(
+        'YYYY-MM-DD HH:mm:ss',
+      )
+      imageSize = `${(selectedImage.Size ? selectedImage.Size / 1024 / 1024 : 0).toFixed(2)} MB`
+      imageDownloadUrl =
+        selectedImage.Binary != undefined
+          ? repo.configuration.repositoryUrl + selectedImage.Binary.__mediaresource.media_src
+          : ''
+    }
     setSelectedimage({
       imgIndex: imageIndex,
-      imgPath: repo.configuration.repositoryUrl + selectedImage.Path,
-      imgTitle: selectedImage.DisplayName ? selectedImage.DisplayName : '',
-      imgDescription: selectedImage.Description ? selectedImage.Description : '',
-      imgAuthor: selectedImage.CreatedBy ? ((selectedImage.CreatedBy as User).FullName as string) : '',
+      imgPath: imagePath,
+      imgTitle: imgageDisplayName,
+      imgDescription: imgageDescription,
+      imgAuthor: imgageAuthorName,
       imgAuthorAvatar: avatarUserAvatarUrl as string,
-      imgCreationDate: moment(new Date(selectedImage.CreationDate ? selectedImage.CreationDate : '')).format(
-        'YYYY-MM-DD HH:mm:ss',
-      ),
-      imgSize: `${(selectedImage.Size ? selectedImage.Size / 1024 / 1024 : 0).toFixed(2)} MB`,
-      imgDownloadUrl: selectedImage.Binary
-        ? repo.configuration.repositoryUrl + selectedImage.Binary.__mediaresource.media_src
-        : '',
+      imgCreationDate: imgageCreationDate,
+      imgSize: imageSize,
+      imgDownloadUrl: imageDownloadUrl,
     })
     if (openInfoTab) {
       setOpen(true)
